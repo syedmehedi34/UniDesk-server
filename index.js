@@ -73,9 +73,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Database and collections sections
-    const universityCollection = client
-      .db("UniDesk")
-      .collection("universities");
+    const collegeCollection = client.db("UniDesk").collection("universities");
 
     //. Auth related APIs [JWT token]--//
     app.post("/jwt", async (req, res) => {
@@ -115,7 +113,7 @@ async function run() {
 
     //----------------- All APIs -----------------//
     app.get("/universities", async (req, res) => {
-      const result = await universityCollection.find().toArray();
+      const result = await collegeCollection.find().toArray();
       res.send(result);
     });
     //--------------------------------------------//
