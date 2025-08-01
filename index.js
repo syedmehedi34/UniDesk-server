@@ -73,9 +73,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Database and collections sections
-    const jobApplicationCollection = client
-      .db("jobPortal")
-      .collection("job_applications");
+    const universityCollection = client
+      .db("UniDesk")
+      .collection("universities");
 
     //. Auth related APIs [JWT token]--//
     app.post("/jwt", async (req, res) => {
@@ -114,13 +114,8 @@ async function run() {
     });
 
     //----------------- All APIs -----------------//
-    app.get("/job-application", verifyToken, verifyAdmin, async (req, res) => {
-      // check token
-      // console.log(req.cookies.token);
-      // console.log(req);
-      // console.log(req?.user?.email);
-
-      const result = await jobApplicationCollection.find().toArray();
+    app.get("/universities", async (req, res) => {
+      const result = await universityCollection.find().toArray();
       res.send(result);
     });
     //--------------------------------------------//
