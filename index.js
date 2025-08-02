@@ -11,7 +11,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"], // can be multiple
+    origin: ["http://localhost:5173", "https://unidesk.netlify.app"],
     credentials: true,
   })
 );
