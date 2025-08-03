@@ -231,6 +231,16 @@ async function run() {
       }
     });
 
+    // get all reviews for a specific university
+    app.get("/applications", async (req, res) => {
+      const { studentEmail } = req.query;
+
+      const applications = await applicationsCollection
+        .find({ candidateEmail: studentEmail })
+        .toArray();
+      res.json(applications);
+    });
+
     //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
