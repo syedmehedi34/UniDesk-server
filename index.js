@@ -179,6 +179,26 @@ async function run() {
       res.send({ message: "User data updated successfully", result });
     });
 
+    //
+    app.get("/user-college", async (req, res) => {
+      const email = req.query.email;
+
+      if (!email) {
+        return res.status(400).send({ message: "Email is required" });
+      }
+
+      try {
+        const applications = await applicationsCollection
+          .find({ candidateEmail: email })
+          .toArray();
+
+        res.send(applications);
+      } catch (error) {
+        console.error("Error fetching college applications:", error);
+        res.status(500).send({ message: "Server error" });
+      }
+    });
+
     //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
