@@ -241,6 +241,12 @@ async function run() {
       res.json(applications);
     });
 
+    // get all reviews
+    app.get("/all-reviews", async (req, res) => {
+      const reviews = await reviewCollection.find().toArray();
+      res.json(reviews);
+    });
+
     //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
