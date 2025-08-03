@@ -78,6 +78,7 @@ async function run() {
       .db("UniDesk")
       .collection("applications");
     const userCollection = client.db("UniDesk").collection("users");
+    const reviewCollection = client.db("UniDesk").collection("reviews");
     // const userCollection = client.db("UniDesk
 
     //. Auth related APIs [JWT token]--//
@@ -197,6 +198,13 @@ async function run() {
         console.error("Error fetching college applications:", error);
         res.status(500).send({ message: "Server error" });
       }
+    });
+
+    // save reviews to reviewCollection
+    app.post("/reviews", async (req, res) => {
+      const reviewData = req.body;
+      const result = await reviewCollection.insertOne(reviewData);
+      res.send(result);
     });
 
     //*--------------------------------------------//
