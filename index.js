@@ -158,6 +158,27 @@ async function run() {
       res.send(userData);
     });
 
+    app.patch("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const updatedData = req.body;
+
+      const query = { email };
+      const update = { $set: updatedData };
+      const result = await userCollection.updateOne(query, update);
+
+      if (result.matchedCount === 0) {
+        return res.status(404).send({ message: "User not found" });
+      }
+
+      if (result.modifiedCount === 0) {
+        return res
+          .status(200)
+          .send({ message: "No changes made to user data" });
+      }
+
+      res.send({ message: "User data updated successfully", result });
+    });
+
     //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
