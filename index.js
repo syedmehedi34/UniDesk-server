@@ -74,6 +74,10 @@ async function run() {
   try {
     // Database and collections sections
     const collegeCollection = client.db("UniDesk").collection("universities");
+    const applicationsCollection = client
+      .db("UniDesk")
+      .collection("applications");
+    // const userCollection = client.db("UniDesk
 
     //. Auth related APIs [JWT token]--//
     app.post("/jwt", async (req, res) => {
@@ -111,12 +115,19 @@ async function run() {
         .send({ success: true });
     });
 
-    //----------------- All APIs -----------------//
+    //*----------------- All APIs -----------------//
     app.get("/universities", async (req, res) => {
       const result = await collegeCollection.find().toArray();
       res.send(result);
     });
-    //--------------------------------------------//
+
+    app.post("/apply-admission", async (req, res) => {
+      const applicationData = req.body;
+      const result = await applicationsCollection.insertOne(applicationData);
+      res.send(result);
+    });
+
+    //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
