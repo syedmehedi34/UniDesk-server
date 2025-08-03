@@ -143,6 +143,21 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/user-data", async (req, res) => {
+      const email = req.query.email;
+      // console.log("Fetching user data for email:", email);
+      if (!email) {
+        return res.status(400).send({ message: "Email is required" });
+      }
+      const query = { email: email };
+      const userData = await userCollection.findOne(query);
+      if (!userData) {
+        return res.status(404).send({ message: "User not found" });
+      }
+      // console.log("User data found:", userData);
+      res.send(userData);
+    });
+
     //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
