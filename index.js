@@ -207,6 +207,30 @@ async function run() {
       res.send(result);
     });
 
+    // get reviews for a specific application and user
+    app.get("/api/reviews", async (req, res) => {
+      const { universityId, studentEmail } = req.query;
+      if (
+        !universityId ||
+        !studentEmail ||
+        typeof universityId !== "string" ||
+        typeof studentEmail !== "string"
+      ) {
+        return res
+          .status(400)
+          .json({ message: "Valid applicationId and userEmail are required" });
+      }
+      try {
+        const reviews = await reviewCollection
+          .find({ universityId, studentEmail })
+          .toArray();
+        res.json(reviews);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        res.status(500).json({ message: "Server error" });
+      }
+    });
+
     //*--------------------------------------------//
   } finally {
     // Ensures that the client will close when you finish/error
