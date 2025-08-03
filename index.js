@@ -77,6 +77,7 @@ async function run() {
     const applicationsCollection = client
       .db("UniDesk")
       .collection("applications");
+    const userCollection = client.db("UniDesk").collection("users");
     // const userCollection = client.db("UniDesk
 
     //. Auth related APIs [JWT token]--//
@@ -124,6 +125,21 @@ async function run() {
     app.post("/apply-admission", async (req, res) => {
       const applicationData = req.body;
       const result = await applicationsCollection.insertOne(applicationData);
+      res.send(result);
+    });
+
+    app.post("/users", async (req, res) => {
+      const userData = req.body;
+      // console.log("User data received:", userData);
+      const query = { uid: userData.uid };
+      const existingUser = await userCollection.findOne(query);
+
+      if (existingUser) {
+        // console.log("User already exists:", existingUser);
+        return res.status(409).send({ message: "User already exists" });
+      }
+      const result = await userCollection.insertOne(userData);
+      // console.log("User data saved:", result);
       res.send(result);
     });
 
